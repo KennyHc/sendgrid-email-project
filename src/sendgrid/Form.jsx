@@ -15,42 +15,50 @@ export default function EmailForm() {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // Prevents default form submission behavior
-        console.log('Email:', email, 'Text:', text);
-        // Here you can add what you want to do with the values
+        e.preventDefault();
+        const mailtoLink = `mailto:${email}?subject=Subject&body=${encodeURIComponent(text)}`;
+        window.open(mailtoLink, '_blank');
     };
+
+    const emailInput = (<Form.Group className="mb-3">
+        <Form.Label htmlFor="exampleEmail">Email</Form.Label>
+        <Form.Control
+            type="email"
+            name="email"
+            id="exampleEmail"
+            placeholder="Enter email"
+            value={email}
+            onChange={handleEmailChange}
+        />
+    </Form.Group>)
+
+    const textInput = (<Form.Group className="mb-3">
+        <Form.Label htmlFor="exampleText">Text</Form.Label>
+        <Form.Control
+            as="textarea"
+            id="exampleText"
+            placeholder="Enter text"
+            rows={4}
+            value={text}
+            onChange={handleTextChange}
+        />
+    </Form.Group>)
+
+
+    const submitButton = (<Button variant="primary" type="submit">
+        Send
+    </Button>)
+
+    const form = (<Form className="form" onSubmit={handleSubmit}>
+        {emailInput}
+        {textInput}
+        {submitButton}
+    </Form>)
 
     return (
         <Container className="centered form-container">
             <h1>Email Form</h1>
-            <Form className="form" onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label htmlFor="exampleEmail">Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        id="exampleEmail"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={handleEmailChange}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label htmlFor="exampleText">Text</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        id="exampleText"
-                        placeholder="Text"
-                        rows={4}
-                        value={text}
-                        onChange={handleTextChange}
-                    />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
+            {form}
         </Container>
     );
-}
-
+};
